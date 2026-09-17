@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Munafa</title>
+<meta name="description" content="Munafa — one dashboard for Shopify sellers running COD through local couriers: real profit and loss, courier tracking, and ad spend, in one place.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --primary-tint: #eef2ff;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --ink: #111827;
+    --ink-soft: #6b7280;
+    --ink-mute: #9ca3af;
+    --bg: #fafafa;
+    --card: #ffffff;
+    --border: #e5e7eb;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --shadow-md: 0 12px 24px -8px rgba(17,24,39,0.12), 0 4px 8px -2px rgba(17,24,39,0.06);
+    --font-head: 'Sora', system-ui, sans-serif;
+    --font-body: 'Manrope', system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --primary: #818cf8;
+      --primary-dark: #a5b4fc;
+      --primary-tint: rgba(99,102,241,0.14);
+      --ink: #f3f4f6;
+      --ink-soft: #b3b8c4;
+      --ink-mute: #8b8fa3;
+      --bg: #0f0f13;
+      --card: #17171d;
+      --border: rgba(255,255,255,0.09);
+    }
+  }
+  :root[data-theme="dark"] {
+    --primary: #818cf8;
+    --primary-dark: #a5b4fc;
+    --primary-tint: rgba(99,102,241,0.14);
+    --ink: #f3f4f6;
+    --ink-soft: #b3b8c4;
+    --ink-mute: #8b8fa3;
+    --bg: #0f0f13;
+    --card: #17171d;
+    --border: rgba(255,255,255,0.09);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  h1, h2, h3 { font-family: var(--font-head); margin: 0; letter-spacing: -0.02em; }
+  p { margin: 0; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; }
+  img, svg { display: block; }
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; border: 1px solid transparent; transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease; }
+  .btn:active { transform: translateY(1px); }
+  .btn--primary { background: var(--primary); color: #fff; box-shadow: 0 6px 16px -4px rgba(99,102,241,0.45); }
+  .btn--primary:hover { background: var(--primary-dark); }
+  .btn--ghost { background: transparent; color: var(--ink); border-color: var(--border); }
+  .btn--ghost:hover { border-color: var(--ink-mute); }
+  .btn--onDark { background: #fff; color: var(--primary-dark); }
+  .btn--onDark:hover { background: #f4f4ff; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--primary-dark); background: var(--primary-tint); border-radius: 999px; padding: 6px 14px; }
+  section { padding: 96px 0; }
+  .icon { width: 22px; height: 22px; flex-shrink: 0; }
+  .kpi { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; background: var(--card); }
+  .kpi-label { font-size: 11px; color: var(--ink-mute); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+  .kpi-val { font-family: var(--font-head); font-weight: 700; font-size: 20px; margin-top: 6px; }
+  .feature-card { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px; background: var(--card); display: flex; flex-direction: column; gap: 14px; }
+  .feature-badge { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-head); font-weight: 800; font-size: 15px; }
+  .step-num { font-family: var(--font-head); font-weight: 800; font-size: 15px; color: var(--primary); width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; }
+  .nav-link { font-size: 14.5px; font-weight: 600; color: var(--ink-soft); padding: 10px 4px; }
+  .integration-chip { font-size: 14.5px; font-weight: 700; color: var(--ink-soft); padding: 8px 16px; border: 1px solid var(--border); border-radius: 999px; }
+  .theme-toggle { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--card); color: var(--ink-soft); }
+  .nav-toggle { display: none; width: 42px; height: 42px; align-items: center; justify-content: center; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--card); color: var(--ink); }
+  .mobile-menu { border-top: 1px solid var(--border); background: var(--card); padding: 16px 24px 24px; display: none; flex-direction: column; gap: 4px; }
+  .mobile-menu.is-open { display: flex; }
+  .bar { flex: 1; border-radius: 4px 4px 0 0; }
+
+  .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 56px; align-items: center; }
+  .feature-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+  .steps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; }
+  .footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 40px; padding-bottom: 48px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 16px; }
+
+  @media (max-width: 900px) {
+    section { padding: 64px 0; }
+    .nav-desktop { display: none !important; }
+    .nav-toggle { display: flex !important; }
+  }
+  @media (max-width: 860px) {
+    .hero-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 780px) {
+    .feature-grid { grid-template-columns: repeat(2,1fr); }
+    .steps-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr !important; max-width: 400px; margin-left: auto; margin-right: auto; }
+  }
+  @media (max-width: 520px) {
+    .feature-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 38px !important; }
+  }
+</style>
+</head>
+<body>
+
+<header style="position: sticky; top: 0; z-index: 40; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);">
+  <div class="container" style="height: 76px; display:flex; align-items:center; justify-content:space-between;">
+    <a href="#top" style="display:flex; align-items:center; gap:10px;">
+      <span style="width:34px; height:34px; border-radius:9px; background:var(--primary); display:flex; align-items:center; justify-content:center; color:#fff; font-family:var(--font-head); font-weight:800; font-size:16px;" aria-hidden="true">M</span>
+      <span style="font-family:var(--font-head); font-weight:700; font-size:19px;">Munafa</span>
+    </a>
+
+    <nav class="nav-desktop" style="display:flex; align-items:center; gap:28px;" aria-label="Primary">
+      <a class="nav-link" href="#features">Features</a>
+      <a class="nav-link" href="#how">How it works</a>
+      <a class="nav-link" href="#pricing">Pricing</a>
+      <a class="nav-link" href="#contact">Contact</a>
+    </nav>
+
+    <div style="display:flex; align-items:center; gap:10px;">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">
+        <svg class="icon" style="width:18px;height:18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+      </button>
+      <a href="#contact" class="btn btn--ghost nav-desktop" style="height:42px; padding:0 18px;">Sign in</a>
+      <a href="#contact" class="btn btn--primary" style="height:42px; padding:0 18px;">Book a demo</a>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a class="nav-link" href="#features">Features</a>
+    <a class="nav-link" href="#how">How it works</a>
+    <a class="nav-link" href="#pricing">Pricing</a>
+    <a class="nav-link" href="#contact">Contact</a>
+    <a href="#contact" class="btn btn--primary" style="margin-top:10px;">Book a demo</a>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section id="top" style="padding-top:88px; padding-bottom:64px;">
+    <div class="container hero-grid">
+      <div style="display:flex; flex-direction:column; gap:26px; max-width:560px;">
+        <span class="eyebrow">
+          <svg class="icon" style="width:15px;height:15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 L3 14 h8 l-1 8 10-12 h-8 z"></path></svg>
+          Built for Shopify sellers in Pakistan
+        </span>
+        <h1 style="font-size:54px; line-height:1.06; font-weight:700;">Your real <span style="background:linear-gradient(100deg,var(--primary) 15%,#a855f7 85%); -webkit-background-clip:text; background-clip:text; color:transparent;">profit</span>, not a Shopify sales number.</h1>
+        <p style="font-size:18px; line-height:1.6; color:var(--ink-soft);">Munafa pulls your Shopify orders, courier costs, and Facebook ad spend into one dashboard — so you see what you actually made, order by order, city by city.</p>
+        <div style="display:flex; gap:14px; flex-wrap:wrap;">
+          <a href="#contact" class="btn btn--primary" style="height:52px; padding:0 28px; font-size:16px;">Book a demo</a>
+          <a href="#how" class="btn btn--ghost" style="height:52px; padding:0 28px; font-size:16px;">See how it works</a>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px; padding-top:6px;">
+          <svg class="icon" style="width:18px;height:18px; color:var(--success);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span style="font-size:13.5px; color:var(--ink-mute);">No spreadsheets. No juggling Shopify, courier panels, and Ads Manager.</span>
+        </div>
+        <div style="display:flex; gap:36px; padding-top:22px; border-top:1px solid var(--border); margin-top:6px;">
+          <div>
+            <div style="font-family:var(--font-head); font-weight:800; font-size:26px;">3</div>
+            <div style="font-size:12.5px; color:var(--ink-mute);">Data sources unified</div>
+          </div>
+          <div>
+            <div style="font-family:var(--font-head); font-weight:800; font-size:26px;">2</div>
+            <div style="font-size:12.5px; color:var(--ink-mute);">Couriers supported</div>
+          </div>
+          <div>
+            <div style="font-family:var(--font-head); font-weight:800; font-size:26px;">Daily</div>
+            <div style="font-size:12.5px; color:var(--ink-mute);">Automatic profit sync</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="position:relative; padding:20px;" aria-hidden="true">
+        <div style="position:absolute; inset:0; background:radial-gradient(circle at 30% 20%, var(--primary-tint), transparent 60%); border-radius:32px; z-index:0;"></div>
+        <div style="position:relative; z-index:1; background:var(--card); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-md); padding:24px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+            <span style="font-family:var(--font-head); font-weight:700; font-size:15px;">Dashboard</span>
+            <span style="font-size:12px; color:var(--ink-mute); background:var(--bg); border:1px solid var(--border); border-radius:999px; padding:4px 10px;">Today</span>
+          </div>
+          <div class="kpi-grid">
+            <div class="kpi" style="border-top:3px solid var(--primary);">
+              <div class="kpi-label">Revenue</div>
+              <div class="kpi-val">Rs 842,600</div>
+            </div>
+            <div class="kpi" style="border-top:3px solid var(--success);">
+              <div class="kpi-label">Net Profit</div>
+              <div class="kpi-val" style="color:var(--success);">Rs 156,300</div>
+            </div>
+            <div class="kpi" style="border-top:3px solid var(--warning);">
+              <div class="kpi-label">Ad Spend</div>
+              <div class="kpi-val">Rs 38,900</div>
+            </div>
+          </div>
+          <div style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px; display:flex; align-items:flex-end; gap:8px; height:120px;">
+            <div class="bar" style="height:40%; background:#c7d2fe;"></div>
+            <div class="bar" style="height:65%; background:#a5b4fc;"></div>
+            <div class="bar" style="height:50%; background:#818cf8;"></div>
+            <div class="bar" style="height:80%; background:var(--primary);"></div>
+            <div class="bar" style="height:60%; background:#818cf8;"></div>
+            <div class="bar" style="height:90%; background:var(--primary-dark);"></div>
+            <div class="bar" style="height:70%; background:var(--primary);"></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-top:14px;">
+            <span style="font-size:12px; color:var(--ink-mute);">PostEx · Leopards · Shopify</span>
+            <span style="font-size:12px; color:var(--success); font-weight:700;">Illustrative preview</span>
+          </div>
+        </div>
+
+        <!-- floating status chips -->
+        <div style="position:absolute; top:0; right:0; z-index:2; background:var(--card); border:1px solid var(--border); border-radius:999px; box-shadow:var(--shadow-md); padding:8px 14px 8px 10px; display:flex; align-items:center; gap:7px;">
+          <span style="width:20px; height:20px; border-radius:50%; background:var(--success); display:flex; align-items:center; justify-content:center;">
+            <svg style="width:12px;height:12px;" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </span>
+          <span style="font-size:12.5px; font-weight:700;">Shopify synced</span>
+        </div>
+        <div style="position:absolute; bottom:36px; left:-6px; z-index:2; background:var(--card); border:1px solid var(--border); border-radius:var(--radius-md); box-shadow:var(--shadow-md); padding:10px 14px; display:flex; align-items:center; gap:10px; max-width:190px;">
+          <span style="width:30px; height:30px; border-radius:9px; background:var(--primary-tint); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+            <svg style="width:16px;height:16px; color:var(--primary-dark);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.4 14.5 16 10 4 20"></path><path d="M12 4h9v9"></path><path d="M4 4l16 16"></path></svg>
+          </span>
+          <div>
+            <div style="font-size:12.5px; font-weight:700; line-height:1.3;">New order booked</div>
+            <div style="font-size:11px; color:var(--ink-mute);">via Leopards</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTEGRATIONS -->
+  <section id="integrations" style="padding:32px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--card);">
+    <div class="container" style="display:flex; align-items:center; gap:28px; flex-wrap:wrap; justify-content:center;">
+      <span style="font-size:13px; font-weight:700; color:var(--ink-mute); text-transform:uppercase; letter-spacing:0.06em;">Connects with</span>
+      <span class="integration-chip">Shopify</span>
+      <span class="integration-chip">Facebook Ads</span>
+      <span class="integration-chip">PostEx</span>
+      <span class="integration-chip">Leopards Courier</span>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section>
+    <div class="container" style="max-width:760px; text-align:center; margin:0 auto; display:flex; flex-direction:column; gap:16px;">
+      <h2 style="font-size:34px; font-weight:700;">Revenue isn't profit. But most dashboards stop at revenue.</h2>
+      <p style="font-size:16.5px; line-height:1.7; color:var(--ink-soft);">Shopify shows you sales. Your courier panel shows you shipments. Ads Manager shows you spend. None of them show what's left over after returns, COD fees, and courier charges eat into the order. Munafa does that math for you, automatically, every day.</p>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" style="background:var(--card); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+    <div class="container">
+      <div style="text-align:center; max-width:620px; margin:0 auto 56px;">
+        <span class="eyebrow">What Munafa does</span>
+        <h2 style="font-size:36px; font-weight:700; margin-top:16px;">One dashboard for the whole operation</h2>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-badge" style="background:#eef2ff; color:#6366f1;">01</div>
+          <h3 style="font-size:16.5px; font-weight:700;">Unified Dashboard</h3>
+          <p style="font-size:14px; line-height:1.6; color:var(--ink-soft);">Shopify orders, courier status, and ad spend in one KPI view — updated automatically.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-badge" style="background:#f3f0ff; color:#7c3aed;">02</div>
+          <h3 style="font-size:16.5px; font-weight:700;">Multi-Courier Tracking</h3>
+          <p style="font-size:14px; line-height:1.6; color:var(--ink-soft);">Track and book PostEx and Leopards shipments, and compare courier performance side by side.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-badge" style="background:#ecfdf5; color:#10b981;">03</div>
+          <h3 style="font-size:16.5px; font-weight:700;">Real Profit &amp; Loss</h3>
+          <p style="font-size:14px; line-height:1.6; color:var(--ink-soft);">Revenue minus courier cost minus ad spend, calculated automatically per order.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-badge" style="background:#fffbeb; color:#f59e0b;">04</div>
+          <h3 style="font-size:16.5px; font-weight:700;">Facebook Ads Intelligence</h3>
+          <p style="font-size:14px; line-height:1.6; color:var(--ink-soft);">Break-even calculator, confirmation impact, inventory ad alerts, and a weekly performance digest.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-badge" style="background:#eff6ff; color:#3b82f6;">05</div>
+          <h3 style="font-size:16.5px; font-weight:700;">Inventory &amp; Product Cost</h3>
+          <p style="font-size:14px; line-height:1.6; color:var(--ink-soft);">Track stock levels and true product cost so margins stay accurate as prices change.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-badge" style="background:#fef2f2; color:#ef4444;">06</div>
+          <h3 style="font-size:16.5px; font-weight:700;">Accounting Ledger</h3>
+          <p style="font-size:14px; line-height:1.6; color:var(--ink-soft);">Business expenses and ledger entries recorded alongside your order data, not in a separate sheet.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-badge" style="background:#f0f9ff; color:#0ea5e9;">07</div>
+          <h3 style="font-size:16.5px; font-weight:700;">Employees &amp; Attendance</h3>
+          <p style="font-size:14px; line-height:1.6; color:var(--ink-soft);">Keep staff records and attendance in the same place you run the rest of the business.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-badge" style="background:#f5f3ff; color:#8b5cf6;">08</div>
+          <h3 style="font-size:16.5px; font-weight:700;">Reports</h3>
+          <p style="font-size:14px; line-height:1.6; color:var(--ink-soft);">City-level, courier-level, and product-level reports whenever you need to make a call fast.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <div class="container">
+      <div style="text-align:center; max-width:620px; margin:0 auto 56px;">
+        <span class="eyebrow">How it works</span>
+        <h2 style="font-size:36px; font-weight:700; margin-top:16px;">Live in three steps</h2>
+      </div>
+      <div class="steps-grid">
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          <span class="step-num">1</span>
+          <h3 style="font-size:18px; font-weight:700;">Connect your Shopify store</h3>
+          <p style="font-size:14.5px; line-height:1.6; color:var(--ink-soft);">Orders, products, and customers sync in automatically — nothing to re-enter.</p>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          <span class="step-num">2</span>
+          <h3 style="font-size:18px; font-weight:700;">Connect couriers &amp; ad accounts</h3>
+          <p style="font-size:14.5px; line-height:1.6; color:var(--ink-soft);">Link PostEx, Leopards, and Facebook Ads so every cost lands against the right order.</p>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          <span class="step-num">3</span>
+          <h3 style="font-size:18px; font-weight:700;">See real profit, daily</h3>
+          <p style="font-size:14.5px; line-height:1.6; color:var(--ink-soft);">Your P&amp;L, courier performance, and ad efficiency update automatically — no manual reconciliation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" style="background:var(--card); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+    <div class="container">
+      <div style="text-align:center; max-width:620px; margin:0 auto 16px;">
+        <span class="eyebrow">Pricing</span>
+        <h2 style="font-size:36px; font-weight:700; margin-top:16px;">Plans that grow with your store</h2>
+        <p style="font-size:14.5px; color:var(--ink-mute); margin-top:12px;">Starting prices — final pricing confirmed on a demo call.</p>
+      </div>
+
+      <div class="pricing-grid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:48px; align-items:start;">
+        <div class="feature-card" style="gap:20px;">
+          <div>
+            <h3 style="font-size:18px; font-weight:700;">Starter</h3>
+            <p style="font-size:13px; color:var(--ink-mute); margin-top:6px;">For sellers just getting their numbers straight.</p>
+          </div>
+          <div style="display:flex; align-items:baseline; gap:6px;">
+            <span style="font-family:var(--font-head); font-weight:800; font-size:34px;">Rs 4,000</span>
+            <span style="font-size:13px; color:var(--ink-mute);">/ month</span>
+          </div>
+          <a href="#contact" class="btn btn--ghost" style="width:100%;">Book a demo</a>
+          <ul style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px;">
+            <li style="display:flex; gap:10px; font-size:14px; color:var(--ink-soft);"><svg class="icon" style="width:18px;height:18px;color:var(--success);flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>1 Shopify store</li>
+            <li style="display:flex; gap:10px; font-size:14px; color:var(--ink-soft);"><svg class="icon" style="width:18px;height:18px;color:var(--success);flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>1 courier (PostEx or Leopards)</li>
+            <li style="display:flex; gap:10px; font-size:14px; color:var(--ink-soft);"><svg class="icon" style="width:18px;height:18px;color:var(--success);flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Unified orders dashboard</li>
+            <li style="display:flex; gap:10px; font-size:14px; color:var(--ink-soft);"><svg class="icon" style="width:18px;height:18px;color:var(--success);flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Basic reports</li>
+            <li style="display:flex; gap:10px; font-size:14px; color:var(--ink-soft);"><svg class="icon" style="width:18px;height:18px;color:var(--success);flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Email support</li>
+          </ul>
+        </div>
+
+        <div class="feature-card" style="gap:20px; border-color:var(--primary); border-width:2px; box-shadow:var(--shadow-md); position:relative;">
+          <span style="position:absolute; top:-13px; left:24px; background:var(--primary); color:#fff; font-size:11.5px; font-weight:700; padding:4px 12px; border-radius:999px;">Most popular</span>
+          <div>
+            <h3 style="font-size:18px; font-weight:700;">Growth</h3>
+            <p style="font-size:13px; color:var(--ink-mute); margin-top:6px;">For stores that need real profit, not just sales.</p>
+          </div>
+          <div style="display:flex; align-items:baseline; gap:6px;">
+            <span style="font-family:var(--font-head); font-weight:800; font-size:34px;">Rs 9,500</span>
+            <span style="font-size:13px; color:var(--ink-mute);">/ month</span>
+          </div>
+          <a href="#contact" class="btn btn--primary" style="width:100%;">Book a demo</a>
+          <ul style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px;">
+            <li style="display:flex; gap:10px; font-size:14px; color:var(--ink-soft);"><svg class="icon" style="width:18px;height:18px;color:var(--success);flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Everything in Starter</li>
+            <li style="display:flex; gap:10px; font-size:14px; color:var(--ink-soft);"><svg class="icon" style="width:18px;height:18px;color:var(--success);flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Both couriers (PostEx + Leopards)</li>
+            <li style="display:flex; gap:10px; font-size:14px; color:var(--ink-soft);"><svg class="icon" style="width:18px;height:18px;color:var(--success);flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Real Profit &amp; Loss</li>
+            <li style="display:flex; gap:10px; font-size:14px; color:var(--ink-soft);"><svg class="icon" style="width:18px;height:18px;color:var(--success);flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Facebook Ads intelligence</li>
+            <li style="display:flex; gap:10px; font-size:14px; color:var(--ink-soft);"><svg class="icon" style="width:18px;height:18px;color:var(--success);flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Inventory &amp; product cost</li>
+            <li style="display:flex; gap:10px; font-size:14px; color:var(--ink-soft);"><svg class="icon" style="width:18px;height:18px;color:var(--success);flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Priority support</li>
+          </ul>
+        </div>
+
+        <div class="feature-card" style="gap:20px;">
+          <div>
+            <h3 style="font-size:18px; font-weight:700;">Pro</h3>
+            <p style="font-size:13px; color:var(--ink-mute); margin-top:6px;">For teams running the whole operation from Munafa.</p>
+          </div>
+          <div style="display:flex; align-items:baseline; gap:6px;">
+            <span style="font-family:var(--font-head); font-weight:800; font-size:34px;">Rs 18,000</span>
+            <span style="font-size:13px; color:var(--ink-mute);">/ month</span>
+          </div>
+          <a href="#contact" class="btn btn--ghost" style="width:100%;">Book a demo</a>
+          <ul style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px;">
+            <li style="display:flex; gap:10px; font-size:14px; color:var(--ink-soft);"><svg class="icon" style="width:18px;height:18px;color:var(--success);flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Everything in Growth</li>
+            <li style="display:flex; gap:10px; font-size:14px; color:var(--ink-soft);"><svg class="icon" style="width:18px;height:18px;color:var(--success);flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Multiple Shopify stores</li>
+            <li style="display:flex; gap:10px; font-size:14px; color:var(--ink-soft);"><svg class="icon" style="width:18px;height:18px;color:var(--success);flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Accounting ledger &amp; expenses</li>
+            <li style="display:flex; gap:10px; font-size:14px; color:var(--ink-soft);"><svg class="icon" style="width:18px;height:18px;color:var(--success);flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Employees &amp; attendance</li>
+            <li style="display:flex; gap:10px; font-size:14px; color:var(--ink-soft);"><svg class="icon" style="width:18px;height:18px;color:var(--success);flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Custom reports</li>
+            <li style="display:flex; gap:10px; font-size:14px; color:var(--ink-soft);"><svg class="icon" style="width:18px;height:18px;color:var(--success);flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Dedicated onboarding</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="background:var(--primary);">
+    <div class="container" style="text-align:center; display:flex; flex-direction:column; align-items:center; gap:22px;">
+      <h2 style="font-size:32px; font-weight:700; color:#fff; max-width:560px;">Stop guessing your profit. Start seeing it.</h2>
+      <p style="font-size:15.5px; color:rgba(255,255,255,0.85); max-width:480px;">Book a walkthrough and we'll connect a sample of your own store data live.</p>
+      <a href="#contact" class="btn btn--onDark" style="height:52px; padding:0 30px; font-size:16px;">Book a demo</a>
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer id="contact" style="background:var(--card); border-top:1px solid var(--border); padding-top:64px;">
+  <div class="container footer-grid">
+    <div style="display:flex; flex-direction:column; gap:14px; max-width:320px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="width:30px; height:30px; border-radius:8px; background:var(--primary); display:flex; align-items:center; justify-content:center; color:#fff; font-family:var(--font-head); font-weight:800; font-size:14px;" aria-hidden="true">M</span>
+        <span style="font-family:var(--font-head); font-weight:700; font-size:17px;">Munafa</span>
+      </div>
+      <p style="font-size:13.5px; color:var(--ink-soft); line-height:1.6;">One dashboard for Shopify sellers running COD through local couriers — orders, courier costs, ad spend, and real profit, in one place.</p>
+      <a href="mailto:hussainqasim10@gmail.com" style="font-size:13.5px; font-weight:700; color:var(--primary-dark);">hussainqasim10@gmail.com</a>
+      <a href="tel:+923317504663" style="font-size:13.5px; font-weight:700; color:var(--primary-dark);">+92 331 7504663</a>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <span style="font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-mute);">Product</span>
+      <a class="nav-link" style="padding:0;" href="#features">Features</a>
+      <a class="nav-link" style="padding:0;" href="#how">How it works</a>
+      <a class="nav-link" style="padding:0;" href="#integrations">Integrations</a>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <span style="font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-mute);">Company</span>
+      <a class="nav-link" style="padding:0;" href="#contact">Contact</a>
+      <a class="nav-link" style="padding:0;" href="#top">Back to top</a>
+    </div>
+  </div>
+  <div style="border-top:1px solid var(--border);">
+    <div class="container" style="padding:20px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+      <span style="font-size:12.5px; color:var(--ink-mute);">© 2026 Munafa. All rights reserved.</span>
+      <span style="font-size:12.5px; color:var(--ink-mute);">Made for Pakistani D2C &amp; Shopify sellers.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var navToggle = document.getElementById('navToggle');
+    var mobileMenu = document.getElementById('mobileMenu');
+    navToggle.addEventListener('click', function () {
+      var open = mobileMenu.classList.toggle('is-open');
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    mobileMenu.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        mobileMenu.classList.remove('is-open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    var themeToggle = document.getElementById('themeToggle');
+    var root = document.documentElement;
+    try {
+      var saved = localStorage.getItem('munafa-theme');
+      if (saved === 'dark' || saved === 'light') root.setAttribute('data-theme', saved);
+    } catch (e) {}
+    themeToggle.addEventListener('click', function () {
+      var current = root.getAttribute('data-theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var isDark = current ? current === 'dark' : prefersDark;
+      var next = isDark ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('munafa-theme', next); } catch (e) {}
+    });
+  })();
+</script>
+</body>
+</html>
