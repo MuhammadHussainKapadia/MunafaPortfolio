@@ -7,7 +7,7 @@
 <meta name="description" content="Munafa — one dashboard for Shopify sellers running COD through local couriers: real profit and loss, courier tracking, and ad spend, in one place.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --primary: #6366f1;
@@ -18,15 +18,15 @@
     --ink: #111827;
     --ink-soft: #6b7280;
     --ink-mute: #9ca3af;
-    --bg: #fafafa;
+    --bg: #f5f3ff;
     --card: #ffffff;
     --border: #e5e7eb;
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 20px;
     --shadow-md: 0 12px 24px -8px rgba(17,24,39,0.12), 0 4px 8px -2px rgba(17,24,39,0.06);
-    --font-head: 'Sora', system-ui, sans-serif;
-    --font-body: 'Manrope', system-ui, sans-serif;
+    --font-head: 'Poppins', system-ui, sans-serif;
+    --font-body: 'Open Sans', system-ui, sans-serif;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -86,6 +86,12 @@
   .mobile-menu.is-open { display: flex; }
   .bar { flex: 1; border-radius: 4px 4px 0 0; }
 
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity 650ms cubic-bezier(.16,.84,.44,1), transform 650ms cubic-bezier(.16,.84,.44,1); }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
   .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 56px; align-items: center; }
   .feature-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
   .steps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; }
@@ -111,6 +117,7 @@
     h1 { font-size: 38px !important; }
   }
 </style>
+<noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
 </head>
 <body>
 
@@ -152,7 +159,7 @@
   <!-- HERO -->
   <section id="top" style="padding-top:88px; padding-bottom:64px;">
     <div class="container hero-grid">
-      <div style="display:flex; flex-direction:column; gap:26px; max-width:560px;">
+      <div class="reveal" style="display:flex; flex-direction:column; gap:26px; max-width:560px;">
         <span class="eyebrow">
           <svg class="icon" style="width:15px;height:15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 L3 14 h8 l-1 8 10-12 h-8 z"></path></svg>
           Built for Shopify sellers in Pakistan
@@ -183,7 +190,7 @@
         </div>
       </div>
 
-      <div style="position:relative; padding:20px;" aria-hidden="true">
+      <div class="reveal" style="position:relative; padding:20px; transition-delay:120ms;" aria-hidden="true">
         <div style="position:absolute; inset:0; background:radial-gradient(circle at 30% 20%, var(--primary-tint), transparent 60%); border-radius:32px; z-index:0;"></div>
         <div style="position:relative; z-index:1; background:var(--card); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-md); padding:24px;">
           <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
@@ -241,7 +248,7 @@
 
   <!-- INTEGRATIONS -->
   <section id="integrations" style="padding:32px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--card);">
-    <div class="container" style="display:flex; align-items:center; gap:28px; flex-wrap:wrap; justify-content:center;">
+    <div class="container reveal" style="display:flex; align-items:center; gap:28px; flex-wrap:wrap; justify-content:center;">
       <span style="font-size:13px; font-weight:700; color:var(--ink-mute); text-transform:uppercase; letter-spacing:0.06em;">Connects with</span>
       <span class="integration-chip">Shopify</span>
       <span class="integration-chip">Facebook Ads</span>
@@ -252,7 +259,7 @@
 
   <!-- PROBLEM -->
   <section>
-    <div class="container" style="max-width:760px; text-align:center; margin:0 auto; display:flex; flex-direction:column; gap:16px;">
+    <div class="container reveal" style="max-width:760px; text-align:center; margin:0 auto; display:flex; flex-direction:column; gap:16px;">
       <h2 style="font-size:34px; font-weight:700;">Revenue isn't profit. But most dashboards stop at revenue.</h2>
       <p style="font-size:16.5px; line-height:1.7; color:var(--ink-soft);">Shopify shows you sales. Your courier panel shows you shipments. Ads Manager shows you spend. None of them show what's left over after returns, COD fees, and courier charges eat into the order. Munafa does that math for you, automatically, every day.</p>
     </div>
@@ -267,42 +274,42 @@
       </div>
 
       <div class="feature-grid">
-        <div class="feature-card">
+        <div class="feature-card reveal">
           <div class="feature-badge" style="background:#eef2ff; color:#6366f1;">01</div>
           <h3 style="font-size:16.5px; font-weight:700;">Unified Dashboard</h3>
           <p style="font-size:14px; line-height:1.6; color:var(--ink-soft);">Shopify orders, courier status, and ad spend in one KPI view — updated automatically.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card reveal">
           <div class="feature-badge" style="background:#f3f0ff; color:#7c3aed;">02</div>
           <h3 style="font-size:16.5px; font-weight:700;">Multi-Courier Tracking</h3>
           <p style="font-size:14px; line-height:1.6; color:var(--ink-soft);">Track and book PostEx and Leopards shipments, and compare courier performance side by side.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card reveal">
           <div class="feature-badge" style="background:#ecfdf5; color:#10b981;">03</div>
           <h3 style="font-size:16.5px; font-weight:700;">Real Profit &amp; Loss</h3>
           <p style="font-size:14px; line-height:1.6; color:var(--ink-soft);">Revenue minus courier cost minus ad spend, calculated automatically per order.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card reveal">
           <div class="feature-badge" style="background:#fffbeb; color:#f59e0b;">04</div>
           <h3 style="font-size:16.5px; font-weight:700;">Facebook Ads Intelligence</h3>
           <p style="font-size:14px; line-height:1.6; color:var(--ink-soft);">Break-even calculator, confirmation impact, inventory ad alerts, and a weekly performance digest.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card reveal">
           <div class="feature-badge" style="background:#eff6ff; color:#3b82f6;">05</div>
           <h3 style="font-size:16.5px; font-weight:700;">Inventory &amp; Product Cost</h3>
           <p style="font-size:14px; line-height:1.6; color:var(--ink-soft);">Track stock levels and true product cost so margins stay accurate as prices change.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card reveal">
           <div class="feature-badge" style="background:#fef2f2; color:#ef4444;">06</div>
           <h3 style="font-size:16.5px; font-weight:700;">Accounting Ledger</h3>
           <p style="font-size:14px; line-height:1.6; color:var(--ink-soft);">Business expenses and ledger entries recorded alongside your order data, not in a separate sheet.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card reveal">
           <div class="feature-badge" style="background:#f0f9ff; color:#0ea5e9;">07</div>
           <h3 style="font-size:16.5px; font-weight:700;">Employees &amp; Attendance</h3>
           <p style="font-size:14px; line-height:1.6; color:var(--ink-soft);">Keep staff records and attendance in the same place you run the rest of the business.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card reveal">
           <div class="feature-badge" style="background:#f5f3ff; color:#8b5cf6;">08</div>
           <h3 style="font-size:16.5px; font-weight:700;">Reports</h3>
           <p style="font-size:14px; line-height:1.6; color:var(--ink-soft);">City-level, courier-level, and product-level reports whenever you need to make a call fast.</p>
@@ -319,17 +326,17 @@
         <h2 style="font-size:36px; font-weight:700; margin-top:16px;">Live in three steps</h2>
       </div>
       <div class="steps-grid">
-        <div style="display:flex; flex-direction:column; gap:14px;">
+        <div class="reveal" style="display:flex; flex-direction:column; gap:14px;">
           <span class="step-num">1</span>
           <h3 style="font-size:18px; font-weight:700;">Connect your Shopify store</h3>
           <p style="font-size:14.5px; line-height:1.6; color:var(--ink-soft);">Orders, products, and customers sync in automatically — nothing to re-enter.</p>
         </div>
-        <div style="display:flex; flex-direction:column; gap:14px;">
+        <div class="reveal" style="display:flex; flex-direction:column; gap:14px; transition-delay:100ms;">
           <span class="step-num">2</span>
           <h3 style="font-size:18px; font-weight:700;">Connect couriers &amp; ad accounts</h3>
           <p style="font-size:14.5px; line-height:1.6; color:var(--ink-soft);">Link PostEx, Leopards, and Facebook Ads so every cost lands against the right order.</p>
         </div>
-        <div style="display:flex; flex-direction:column; gap:14px;">
+        <div class="reveal" style="display:flex; flex-direction:column; gap:14px; transition-delay:200ms;">
           <span class="step-num">3</span>
           <h3 style="font-size:18px; font-weight:700;">See real profit, daily</h3>
           <p style="font-size:14.5px; line-height:1.6; color:var(--ink-soft);">Your P&amp;L, courier performance, and ad efficiency update automatically — no manual reconciliation.</p>
@@ -348,7 +355,7 @@
       </div>
 
       <div class="pricing-grid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:48px; align-items:start;">
-        <div class="feature-card" style="gap:20px;">
+        <div class="feature-card reveal" style="gap:20px;">
           <div>
             <h3 style="font-size:18px; font-weight:700;">Starter</h3>
             <p style="font-size:13px; color:var(--ink-mute); margin-top:6px;">For sellers just getting their numbers straight.</p>
@@ -367,7 +374,7 @@
           </ul>
         </div>
 
-        <div class="feature-card" style="gap:20px; border-color:var(--primary); border-width:2px; box-shadow:var(--shadow-md); position:relative;">
+        <div class="feature-card reveal" style="gap:20px; border-color:var(--primary); border-width:2px; box-shadow:var(--shadow-md); position:relative;">
           <span style="position:absolute; top:-13px; left:24px; background:var(--primary); color:#fff; font-size:11.5px; font-weight:700; padding:4px 12px; border-radius:999px;">Most popular</span>
           <div>
             <h3 style="font-size:18px; font-weight:700;">Growth</h3>
@@ -388,7 +395,7 @@
           </ul>
         </div>
 
-        <div class="feature-card" style="gap:20px;">
+        <div class="feature-card reveal" style="gap:20px;">
           <div>
             <h3 style="font-size:18px; font-weight:700;">Pro</h3>
             <p style="font-size:13px; color:var(--ink-mute); margin-top:6px;">For teams running the whole operation from Munafa.</p>
@@ -413,7 +420,7 @@
 
   <!-- CTA -->
   <section style="background:var(--primary);">
-    <div class="container" style="text-align:center; display:flex; flex-direction:column; align-items:center; gap:22px;">
+    <div class="container reveal" style="text-align:center; display:flex; flex-direction:column; align-items:center; gap:22px;">
       <h2 style="font-size:32px; font-weight:700; color:#fff; max-width:560px;">Stop guessing your profit. Start seeing it.</h2>
       <p style="font-size:15.5px; color:rgba(255,255,255,0.85); max-width:480px;">Book a walkthrough and we'll connect a sample of your own store data live.</p>
       <a href="#contact" class="btn btn--onDark" style="height:52px; padding:0 30px; font-size:16px;">Book a demo</a>
@@ -482,6 +489,22 @@
       root.setAttribute('data-theme', next);
       try { localStorage.setItem('munafa-theme', next); } catch (e) {}
     });
+
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var revealEls = document.querySelectorAll('.reveal');
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+    } else {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+      revealEls.forEach(function (el) { observer.observe(el); });
+    }
   })();
 </script>
 </body>
